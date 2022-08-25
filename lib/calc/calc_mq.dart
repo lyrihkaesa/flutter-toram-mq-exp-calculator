@@ -1,12 +1,16 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:toram_mq_calc/model/toram_mq.dart';
 
 class CalculateExpMq {
+  List<ToramMQModel> listMQ = [];
   double resLvlCharFlat = 0;
   double resLvlCharPerc = 0;
   double levelCharFlat = 0;
   double levelCharPerc = 0;
   int startEps = 1;
-  int endEps = toramMqList.length;
+  int endEps = 1;
   double tempExpEpsMqA = 0;
   double tempExpEpsMqB = 0;
   double tempExpEpsMqC = 0;
@@ -17,7 +21,17 @@ class CalculateExpMq {
   var babid = [];
   var baben = [];
 
-  CalculateExpMq();
+  CalculateExpMq() {
+    readJson();
+  }
+
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/list-mq.json');
+    final data = await json.decode(response);
+    var lMQ =
+        data['listMQ'].map((data) => ToramMQModel.fromJson(data)).toList();
+    listMQ = List<ToramMQModel>.from(lMQ);
+  }
 
   List drop({required List array, required int n}) {
     List result = [];
@@ -37,18 +51,20 @@ class CalculateExpMq {
     return result;
   }
 
-  void calculate() {
+  void calculate() async {
+    await readJson();
     resetExp();
-    var start = toramMqList[startEps.toInt() - 1];
-    var end = toramMqList[endEps.toInt() - 1];
-    var countR = drop(array: toramMqList, n: (start.episode.toInt() - 1));
+    endEps = endEps == -1 ? listMQ.length : endEps;
+    var start = listMQ[startEps.toInt() - 1];
+    var end = listMQ[endEps.toInt() - 1];
+    var countR = drop(array: listMQ, n: (start.episode.toInt() - 1));
 
     for (var i = 0; i < (start.episode - 1); i++) {
-      tempExpEpsMqA += toramMqList[i].exp;
+      tempExpEpsMqA += listMQ[i].exp;
     }
 
-    for (var i = end.episode.toInt(); i < toramMqList.length; i++) {
-      tempExpEpsMqC += toramMqList[i].exp;
+    for (var i = end.episode.toInt(); i < listMQ.length; i++) {
+      tempExpEpsMqC += listMQ[i].exp;
     }
 
     var lol = [];
@@ -56,7 +72,7 @@ class CalculateExpMq {
     var nameen = [];
     expBabA = [];
 
-    for (var i = 0; i < 11; i++) {
+    for (var i = 0; i < 12; i++) {
       lol.add(0);
       expBabA.add(0);
       nameid.add('');
@@ -65,90 +81,90 @@ class CalculateExpMq {
 
     // print(expBabA);
 
-    for (var i = 0; i < toramMqList.length; i++) {
-      switch (toramMqList[i].chapter) {
+    for (var i = 0; i < listMQ.length; i++) {
+      switch (listMQ[i].chapter) {
         case 1:
           {
-            nameid[0] = toramMqList[i].chapterid;
-            nameen[0] = toramMqList[i].chapteren;
-            lol[0] += toramMqList[i].exp;
+            nameid[0] = listMQ[i].chapterid;
+            nameen[0] = listMQ[i].chapteren;
+            lol[0] += listMQ[i].exp;
           }
           break;
         case 2:
           {
-            nameid[1] = toramMqList[i].chapterid;
-            nameen[1] = toramMqList[i].chapteren;
-            lol[1] += toramMqList[i].exp;
+            nameid[1] = listMQ[i].chapterid;
+            nameen[1] = listMQ[i].chapteren;
+            lol[1] += listMQ[i].exp;
           }
           break;
         case 3:
           {
-            nameid[2] = toramMqList[i].chapterid;
-            nameen[2] = toramMqList[i].chapteren;
-            lol[2] += toramMqList[i].exp;
+            nameid[2] = listMQ[i].chapterid;
+            nameen[2] = listMQ[i].chapteren;
+            lol[2] += listMQ[i].exp;
           }
           break;
         case 4:
           {
-            nameid[3] = toramMqList[i].chapterid;
-            nameen[3] = toramMqList[i].chapteren;
-            lol[3] += toramMqList[i].exp;
+            nameid[3] = listMQ[i].chapterid;
+            nameen[3] = listMQ[i].chapteren;
+            lol[3] += listMQ[i].exp;
           }
           break;
         case 5:
           {
-            nameid[4] = toramMqList[i].chapterid;
-            nameen[4] = toramMqList[i].chapteren;
-            lol[4] += toramMqList[i].exp;
+            nameid[4] = listMQ[i].chapterid;
+            nameen[4] = listMQ[i].chapteren;
+            lol[4] += listMQ[i].exp;
           }
           break;
         case 6:
           {
-            nameid[5] = toramMqList[i].chapterid;
-            nameen[5] = toramMqList[i].chapteren;
-            lol[5] += toramMqList[i].exp;
+            nameid[5] = listMQ[i].chapterid;
+            nameen[5] = listMQ[i].chapteren;
+            lol[5] += listMQ[i].exp;
           }
           break;
         case 7:
           {
-            nameid[6] = toramMqList[i].chapterid;
-            nameen[6] = toramMqList[i].chapteren;
-            lol[6] += toramMqList[i].exp;
+            nameid[6] = listMQ[i].chapterid;
+            nameen[6] = listMQ[i].chapteren;
+            lol[6] += listMQ[i].exp;
           }
           break;
         case 8:
           {
-            nameid[7] = toramMqList[i].chapterid;
-            nameen[7] = toramMqList[i].chapteren;
-            lol[7] += toramMqList[i].exp;
+            nameid[7] = listMQ[i].chapterid;
+            nameen[7] = listMQ[i].chapteren;
+            lol[7] += listMQ[i].exp;
           }
           break;
         case 9:
           {
-            nameid[8] = toramMqList[i].chapterid;
-            nameen[8] = toramMqList[i].chapteren;
-            lol[8] += toramMqList[i].exp;
+            nameid[8] = listMQ[i].chapterid;
+            nameen[8] = listMQ[i].chapteren;
+            lol[8] += listMQ[i].exp;
           }
           break;
         case 10:
           {
-            nameid[9] = toramMqList[i].chapterid;
-            nameen[9] = toramMqList[i].chapteren;
-            lol[9] += toramMqList[i].exp;
+            nameid[9] = listMQ[i].chapterid;
+            nameen[9] = listMQ[i].chapteren;
+            lol[9] += listMQ[i].exp;
           }
           break;
         case 11:
           {
-            nameid[10] = toramMqList[i].chapterid;
-            nameen[10] = toramMqList[i].chapteren;
-            lol[10] += toramMqList[i].exp;
+            nameid[10] = listMQ[i].chapterid;
+            nameen[10] = listMQ[i].chapteren;
+            lol[10] += listMQ[i].exp;
           }
           break;
         case 12:
           {
-            nameid[11] = toramMqList[i].chapterid;
-            nameen[11] = toramMqList[i].chapteren;
-            lol[11] += toramMqList[i].exp;
+            nameid[11] = listMQ[i].chapterid;
+            nameen[11] = listMQ[i].chapteren;
+            lol[11] += listMQ[i].exp;
           }
           break;
 

@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toram_mq_calc/calc/calc_mq.dart';
-import 'package:toram_mq_calc/model/toram_mq.dart';
 import 'package:toram_mq_calc/screen/detail_mq_calc_screen.dart';
+
+import '../model/toram_mq.dart';
 
 class CalcScreen extends StatefulWidget {
   CalcScreen({Key? key}) : super(key: key);
@@ -15,10 +18,29 @@ class _CalcScreenState extends State<CalcScreen> {
   TextEditingController levelCharacterFlat = TextEditingController(text: "50");
   TextEditingController levelCharacterPerc = TextEditingController(text: "0");
 
-  int startSelectedEpisode = 1;
-  int endSelectedEpisode = toramMqList.length;
+  List<ToramMQModel> listMQ = [];
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/list-mq.json');
+    final data = await json.decode(response);
+    setState(() {
+      var lMQ =
+          data['listMQ'].map((data) => ToramMQModel.fromJson(data)).toList();
+      listMQ = List<ToramMQModel>.from(lMQ);
+      endSelectedEpisode = listMQ.length;
+    });
+  }
 
-  var _calcExpMq = CalculateExpMq();
+  @override
+  void initState() {
+    super.initState();
+    readJson();
+    fungsiSetState();
+  }
+
+  int startSelectedEpisode = 1;
+  int endSelectedEpisode = -1;
+
+  final CalculateExpMq _calcExpMq = CalculateExpMq();
 
   void fungsiSetState() async {
     setState(() {
@@ -205,7 +227,7 @@ class _CalcScreenState extends State<CalcScreen> {
                           isExpanded: true,
                           hint: Text("Episode Awal"),
                           value: startSelectedEpisode,
-                          items: toramMqList.map((value) {
+                          items: listMQ.map((value) {
                             return DropdownMenuItem(
                               child: Text(value.chapter.toStringAsFixed(0) +
                                   "." +
@@ -245,7 +267,7 @@ class _CalcScreenState extends State<CalcScreen> {
                           isExpanded: true,
                           hint: Text("Episode Awal"),
                           value: endSelectedEpisode,
-                          items: toramMqList.map((value) {
+                          items: listMQ.map((value) {
                             return DropdownMenuItem(
                               child: Text(value.chapter.toStringAsFixed(0) +
                                   "." +
@@ -390,7 +412,7 @@ class _CalcScreenState extends State<CalcScreen> {
                           isExpanded: true,
                           hint: Text("Episode Awal"),
                           value: startSelectedEpisode,
-                          items: toramMqList.map((value) {
+                          items: listMQ.map((value) {
                             return DropdownMenuItem(
                               child: Text(value.chapter.toStringAsFixed(0) +
                                   "." +
@@ -430,7 +452,7 @@ class _CalcScreenState extends State<CalcScreen> {
                           isExpanded: true,
                           hint: Text("Episode Awal"),
                           value: endSelectedEpisode,
-                          items: toramMqList.map((value) {
+                          items: listMQ.map((value) {
                             return DropdownMenuItem(
                               child: Text(value.chapter.toStringAsFixed(0) +
                                   "." +

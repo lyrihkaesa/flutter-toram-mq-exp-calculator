@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:toram_mq_calc/calc/calc_mq.dart';
 import 'package:toram_mq_calc/model/toram_mq.dart';
 
 class MqDataScreen extends StatelessWidget {
+  final CalculateExpMq calculateExpMq = CalculateExpMq();
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -28,11 +31,19 @@ class MqDataScreen extends StatelessWidget {
           body: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               if (constraints.maxWidth <= 600) {
-                return MqDataList();
+                return MqDataList(
+                  calculateExpMq: calculateExpMq,
+                );
               } else if (constraints.maxWidth <= 1200) {
-                return MqDataGrid(gridCount: 2);
+                return MqDataGrid(
+                  gridCount: 2,
+                  calculateExpMq: calculateExpMq,
+                );
               } else {
-                return MqDataGrid(gridCount: 3);
+                return MqDataGrid(
+                  gridCount: 3,
+                  calculateExpMq: calculateExpMq,
+                );
               }
             },
           ),
@@ -44,12 +55,13 @@ class MqDataScreen extends StatelessWidget {
 
 class MqDataGrid extends StatelessWidget {
   final int gridCount;
-  MqDataGrid({required this.gridCount});
+  final CalculateExpMq calculateExpMq;
+  MqDataGrid({required this.gridCount, required this.calculateExpMq});
 
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
-      isAlwaysShown: true,
+      thumbVisibility: true,
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: GridView.count(
@@ -57,7 +69,7 @@ class MqDataGrid extends StatelessWidget {
           crossAxisCount: gridCount,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          children: toramMqList.map((mq) {
+          children: calculateExpMq.listMQ.map((mq) {
             return InkWell(
               onTap: () {},
               child: Card(
@@ -125,7 +137,8 @@ class MqDataGrid extends StatelessWidget {
 }
 
 class MqDataList extends StatelessWidget {
-  const MqDataList({Key? key}) : super(key: key);
+  final CalculateExpMq calculateExpMq;
+  const MqDataList({Key? key, required this.calculateExpMq}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +146,8 @@ class MqDataList extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ListView.builder(
         itemBuilder: ((context, index) {
-          final ToramMQ mq = toramMqList.reversed.toList()[index];
+          final ToramMQModel mq =
+              calculateExpMq.listMQ.reversed.toList()[index];
           return InkWell(
             onTap: () {},
             child: Card(
@@ -185,7 +199,7 @@ class MqDataList extends StatelessWidget {
             ),
           );
         }),
-        itemCount: toramMqList.length,
+        itemCount: calculateExpMq.listMQ.length,
         // reverse: true,
       ),
     );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toram_mq_calc/calc/calc_mq.dart';
-import 'package:toram_mq_calc/model/toram_mq.dart';
 
 class DetailMqCalcScreen extends StatelessWidget {
   final CalculateExpMq calculateExpMq;
-  const DetailMqCalcScreen({Key? key, required this.calculateExpMq})
+  DetailMqCalcScreen({Key? key, required this.calculateExpMq})
       : super(key: key);
 
   List<Widget> getBab() {
@@ -238,7 +237,7 @@ class DetailMqCalcScreen extends StatelessWidget {
                               Expanded(
                                 flex: 5,
                                 child: Text(
-                                  '${toramMqList[calculateExpMq.startEps - 1].chapter}. ${toramMqList[calculateExpMq.startEps - 1].chapterid}',
+                                  '${calculateExpMq.listMQ[calculateExpMq.startEps - 1].chapter}. ${calculateExpMq.listMQ[calculateExpMq.startEps - 1].chapterid}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -260,7 +259,7 @@ class DetailMqCalcScreen extends StatelessWidget {
                               Expanded(
                                 flex: 5,
                                 child: Text(
-                                  '${toramMqList[calculateExpMq.endEps - 1].chapter}. ${toramMqList[calculateExpMq.endEps - 1].chapterid}',
+                                  '${calculateExpMq.listMQ[calculateExpMq.endEps - 1].chapter}. ${calculateExpMq.listMQ[calculateExpMq.endEps - 1].chapterid}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -275,7 +274,7 @@ class DetailMqCalcScreen extends StatelessWidget {
                               Expanded(
                                 flex: 5,
                                 child: Text(
-                                  '${toramMqList[calculateExpMq.startEps - 1].episode}. ${toramMqList[calculateExpMq.startEps - 1].episodeid}',
+                                  '${calculateExpMq.listMQ[calculateExpMq.startEps - 1].episode}. ${calculateExpMq.listMQ[calculateExpMq.startEps - 1].episodeid}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -297,7 +296,7 @@ class DetailMqCalcScreen extends StatelessWidget {
                               Expanded(
                                 flex: 5,
                                 child: Text(
-                                  '${toramMqList[calculateExpMq.endEps - 1].episode}. ${toramMqList[calculateExpMq.endEps - 1].episodeid}',
+                                  '${calculateExpMq.listMQ[calculateExpMq.endEps - 1].episode}. ${calculateExpMq.listMQ[calculateExpMq.endEps - 1].episodeid}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14,
