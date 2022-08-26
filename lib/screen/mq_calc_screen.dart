@@ -67,431 +67,533 @@ class _CalcScreenState extends State<CalcScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      length: _myTab.length,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Kalkulator Misi Cerita',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return DefaultTabController(
+          initialIndex: 0,
+          length: _myTab.length,
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Kalkulator Misi Cerita',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: constraints.maxWidth <= 360 ? 16 : 20,
+                      ),
+                    ),
+                    Text(
+                      'By: Kaesa Lyrih',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
                 ),
-                Text(
-                  'By: Kaesa Lyrih',
-                  style: TextStyle(fontSize: 12),
+              ),
+              bottom: TabBar(
+                tabs: _myTab,
+                labelStyle: TextStyle(
+                  fontSize: constraints.maxWidth <= 360 ? 16 : 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            body: TabBarView(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: InkWell(
+                            onTap: () {
+                              fungsiSetState();
+                            },
+                            child: Card(
+                              color: Colors.pink,
+                              child: Align(
+                                // alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Level ${_calcExpMq.resLvlCharFlat.toInt()} (${_calcExpMq.resLvlCharPerc.toInt()}%) ",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize:
+                                        constraints.maxWidth <= 360 ? 24 : 32,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: constraints.maxHeight <= 600
+                                  ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                  : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: constraints.maxHeight <= 600
+                                        ? EdgeInsets.fromLTRB(0, 0, 0, 5)
+                                        : EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: Text(
+                                      "Level Karakter",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Flexible(
+                                        flex: 8,
+                                        child: TextField(
+                                          style: TextStyle(fontSize: 12),
+                                          controller: levelCharacterFlat,
+                                          decoration: InputDecoration(
+                                            labelText: "Flat",
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(11),
+                                            ),
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          onChanged: (value) {
+                                            fungsiSetState();
+                                            // levelCharacterFlat.text = value;
+                                          },
+                                        ),
+                                      ),
+                                      Spacer(
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        flex: 4,
+                                        child: TextField(
+                                          controller: levelCharacterPerc,
+                                          style: TextStyle(fontSize: 12),
+                                          decoration: InputDecoration(
+                                            labelText: "Persen %",
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(11),
+                                            ),
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
+                                          onChanged: (value) {
+                                            if (value == "") {
+                                            } else if (int.parse(value) > 99) {
+                                              levelCharacterPerc.text = "99";
+                                              final val =
+                                                  TextSelection.collapsed(
+                                                offset: levelCharacterPerc
+                                                    .text.length,
+                                              );
+                                              levelCharacterPerc.selection =
+                                                  val;
+                                            }
+                                            fungsiSetState();
+                                            // levelCharacterFlat.text = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: constraints.maxHeight <= 600
+                                  ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                  : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: constraints.maxHeight <= 600
+                                        ? EdgeInsets.fromLTRB(0, 0, 0, 5)
+                                        : EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: Text(
+                                      "Mulai Episode Misi Cerita",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(11),
+                                        // gapPadding: 0,
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    ),
+                                    isExpanded: true,
+                                    hint: Text("Episode Awal"),
+                                    value: startSelectedEpisode,
+                                    items: listMQ.map((value) {
+                                      return DropdownMenuItem(
+                                        child: Text(
+                                          value.chapter.toStringAsFixed(0) +
+                                              "." +
+                                              value.episode.toStringAsFixed(0) +
+                                              " : " +
+                                              value.episodeid,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        value: value.episode,
+                                      );
+                                    }).toList(),
+                                    onChanged: (int? val) {
+                                      startSelectedEpisode = val!;
+                                      fungsiSetState();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: constraints.maxHeight <= 600
+                                  ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                  : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: constraints.maxHeight <= 600
+                                        ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                        : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                    child: Text(
+                                      "Selesai Episode Misi Cerita",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(11),
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    ),
+                                    isExpanded: true,
+                                    hint: Text("Episode Akhir"),
+                                    value: endSelectedEpisode,
+                                    items: listMQ.map((value) {
+                                      return DropdownMenuItem(
+                                        child: Text(
+                                          value.chapter.toStringAsFixed(0) +
+                                              "." +
+                                              value.episode.toStringAsFixed(0) +
+                                              " : " +
+                                              value.episodeid,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        value: value.episode,
+                                      );
+                                    }).toList(),
+                                    onChanged: (int? val) {
+                                      endSelectedEpisode = val!;
+                                      fungsiSetState();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: InkWell(
+                            onTap: () {
+                              fungsiSetState();
+                            },
+                            child: Card(
+                              color: Colors.pink,
+                              child: Align(
+                                // alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Level ${_calcExpMq.resLvlCharFlat.toInt()} (${_calcExpMq.resLvlCharPerc.toInt()}%) ",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize:
+                                        constraints.maxWidth <= 360 ? 24 : 32,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: constraints.maxHeight <= 600
+                                  ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                  : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: constraints.maxHeight <= 600
+                                        ? EdgeInsets.fromLTRB(0, 0, 0, 5)
+                                        : EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: Text(
+                                      "Character Level",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Flexible(
+                                        flex: 8,
+                                        child: TextField(
+                                          style: TextStyle(fontSize: 12),
+                                          controller: levelCharacterFlat,
+                                          decoration: InputDecoration(
+                                            labelText: "Flat",
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(11),
+                                            ),
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          onChanged: (value) {
+                                            fungsiSetState();
+                                            // levelCharacterFlat.text = value;
+                                          },
+                                        ),
+                                      ),
+                                      Spacer(
+                                        flex: 1,
+                                      ),
+                                      Flexible(
+                                        flex: 4,
+                                        child: TextField(
+                                          controller: levelCharacterPerc,
+                                          style: TextStyle(fontSize: 12),
+                                          decoration: InputDecoration(
+                                            labelText: "Persen %",
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(11),
+                                            ),
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
+                                          onChanged: (value) {
+                                            if (value == "") {
+                                            } else if (int.parse(value) > 99) {
+                                              levelCharacterPerc.text = "99";
+                                              final val =
+                                                  TextSelection.collapsed(
+                                                offset: levelCharacterPerc
+                                                    .text.length,
+                                              );
+                                              levelCharacterPerc.selection =
+                                                  val;
+                                            }
+                                            fungsiSetState();
+                                            // levelCharacterFlat.text = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: constraints.maxHeight <= 600
+                                  ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                  : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: constraints.maxHeight <= 600
+                                        ? EdgeInsets.fromLTRB(0, 0, 0, 5)
+                                        : EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: Text(
+                                      "Start Story Mission Episode",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(11),
+                                        // gapPadding: 0,
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    ),
+                                    isExpanded: true,
+                                    hint: Text("Start Episode"),
+                                    value: startSelectedEpisode,
+                                    items: listMQ.map((value) {
+                                      return DropdownMenuItem(
+                                        child: Text(
+                                          value.chapter.toStringAsFixed(0) +
+                                              "." +
+                                              value.episode.toStringAsFixed(0) +
+                                              " : " +
+                                              value.episodeen,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        value: value.episode,
+                                      );
+                                    }).toList(),
+                                    onChanged: (int? val) {
+                                      startSelectedEpisode = val!;
+                                      fungsiSetState();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: constraints.maxHeight <= 600
+                                  ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                  : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: constraints.maxHeight <= 600
+                                        ? EdgeInsets.fromLTRB(0, 0, 0, 10)
+                                        : EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                    child: Text(
+                                      "Complete Story Mission Episode",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(11),
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    ),
+                                    isExpanded: true,
+                                    hint: Text("Last Episode"),
+                                    value: endSelectedEpisode,
+                                    items: listMQ.map((value) {
+                                      return DropdownMenuItem(
+                                        child: Text(
+                                          value.chapter.toStringAsFixed(0) +
+                                              "." +
+                                              value.episode.toStringAsFixed(0) +
+                                              " : " +
+                                              value.episodeen,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        value: value.episode,
+                                      );
+                                    }).toList(),
+                                    onChanged: (int? val) {
+                                      endSelectedEpisode = val!;
+                                      fungsiSetState();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
+            floatingActionButton: ElevatedButton(
+              onPressed: () {
+                fungsiSetState();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return DetailMqCalcScreen(
+                        calculateExpMq: _calcExpMq,
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Text("Detail Info"),
+            ),
           ),
-          bottom: TabBar(
-            tabs: _myTab,
-            labelStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: InkWell(
-                      onTap: () {
-                        fungsiSetState();
-                      },
-                      child: SizedBox(
-                        height: 100,
-                        child: Card(
-                          color: Colors.pink,
-                          child: Align(
-                            // alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Level ${_calcExpMq.resLvlCharFlat.toInt()} (${_calcExpMq.resLvlCharPerc.toInt()}%) ",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            "Level Karakter",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              flex: 8,
-                              child: TextField(
-                                controller: levelCharacterFlat,
-                                decoration: InputDecoration(
-                                  labelText: "Flat",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(11),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                onChanged: (value) {
-                                  fungsiSetState();
-                                  // levelCharacterFlat.text = value;
-                                },
-                              ),
-                            ),
-                            Spacer(
-                              flex: 1,
-                            ),
-                            Flexible(
-                              flex: 4,
-                              child: TextField(
-                                controller: levelCharacterPerc,
-                                decoration: InputDecoration(
-                                  labelText: "Persen %",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(11),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
-                                onChanged: (value) {
-                                  if (value == "") {
-                                  } else if (int.parse(value) > 99) {
-                                    levelCharacterPerc.text = "99";
-                                    final val = TextSelection.collapsed(
-                                      offset: levelCharacterPerc.text.length,
-                                    );
-                                    levelCharacterPerc.selection = val;
-                                  }
-                                  fungsiSetState();
-                                  // levelCharacterFlat.text = value;
-                                },
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            "Mulai Episode Misi Cerita",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        DropdownButtonFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11))),
-                          isExpanded: true,
-                          hint: Text("Episode Awal"),
-                          value: startSelectedEpisode,
-                          items: listMQ.map((value) {
-                            return DropdownMenuItem(
-                              child: Text(value.chapter.toStringAsFixed(0) +
-                                  "." +
-                                  value.episode.toStringAsFixed(0) +
-                                  " : " +
-                                  value.episodeid),
-                              value: value.episode,
-                            );
-                          }).toList(),
-                          onChanged: (int? val) {
-                            startSelectedEpisode = val!;
-                            fungsiSetState();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            "Selesai Episode Misi Cerita",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        DropdownButtonFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11))),
-                          isExpanded: true,
-                          hint: Text("Episode Awal"),
-                          value: endSelectedEpisode,
-                          items: listMQ.map((value) {
-                            return DropdownMenuItem(
-                              child: Text(value.chapter.toStringAsFixed(0) +
-                                  "." +
-                                  value.episode.toStringAsFixed(0) +
-                                  " : " +
-                                  value.episodeid),
-                              value: value.episode,
-                            );
-                          }).toList(),
-                          onChanged: (int? val) {
-                            endSelectedEpisode = val!;
-                            fungsiSetState();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: InkWell(
-                      onTap: () {
-                        fungsiSetState();
-                      },
-                      child: SizedBox(
-                        height: 100,
-                        child: Card(
-                          color: Colors.pink,
-                          child: Align(
-                            // alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Level ${_calcExpMq.resLvlCharFlat.toInt()} (${_calcExpMq.resLvlCharPerc.toInt()}%) ",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            'Character Level',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              flex: 8,
-                              child: TextField(
-                                controller: levelCharacterFlat,
-                                decoration: InputDecoration(
-                                  labelText: "Flat",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(11),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                onChanged: (value) {
-                                  fungsiSetState();
-                                  // levelCharacterFlat.text = value;
-                                },
-                              ),
-                            ),
-                            Spacer(
-                              flex: 1,
-                            ),
-                            Flexible(
-                              flex: 4,
-                              child: TextField(
-                                controller: levelCharacterPerc,
-                                decoration: InputDecoration(
-                                  labelText: "Percent %",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(11),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
-                                onChanged: (value) {
-                                  if (value == "") {
-                                  } else if (int.parse(value) > 99) {
-                                    levelCharacterPerc.text = "99";
-                                    final val = TextSelection.collapsed(
-                                      offset: levelCharacterPerc.text.length,
-                                    );
-                                    levelCharacterPerc.selection = val;
-                                  }
-                                  fungsiSetState();
-                                  // levelCharacterFlat.text = value;
-                                },
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            "Start Story Mission Episode",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        DropdownButtonFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11))),
-                          isExpanded: true,
-                          hint: Text("Episode Awal"),
-                          value: startSelectedEpisode,
-                          items: listMQ.map((value) {
-                            return DropdownMenuItem(
-                              child: Text(value.chapter.toStringAsFixed(0) +
-                                  "." +
-                                  value.episode.toStringAsFixed(0) +
-                                  " : " +
-                                  value.episodeen),
-                              value: value.episode,
-                            );
-                          }).toList(),
-                          onChanged: (int? val) {
-                            startSelectedEpisode = val!;
-                            fungsiSetState();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            "Complete Story Mission Episode",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        DropdownButtonFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11))),
-                          isExpanded: true,
-                          hint: Text("Episode Awal"),
-                          value: endSelectedEpisode,
-                          items: listMQ.map((value) {
-                            return DropdownMenuItem(
-                              child: Text(value.chapter.toStringAsFixed(0) +
-                                  "." +
-                                  value.episode.toStringAsFixed(0) +
-                                  " : " +
-                                  value.episodeen),
-                              value: value.episode,
-                            );
-                          }).toList(),
-                          onChanged: (int? val) {
-                            endSelectedEpisode = val!;
-                            fungsiSetState();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: ElevatedButton(
-          onPressed: () {
-            fungsiSetState();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return DetailMqCalcScreen(
-                    calculateExpMq: _calcExpMq,
-                  );
-                },
-              ),
-            );
-          },
-          child: Text("Detail Info"),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    levelCharacterFlat.dispose();
+    levelCharacterPerc.dispose();
+    super.dispose();
   }
 }

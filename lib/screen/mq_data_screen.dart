@@ -18,7 +18,7 @@ class MqDataScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Daftar Misi Cerita',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
                     'By: Kaesa Lyrih',
